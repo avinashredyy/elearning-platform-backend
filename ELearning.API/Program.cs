@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +56,29 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-app.MapHealthChecks("/api/health");
+// In your Program.cs or Startup.cs
+app.MapHealthChecks("/api/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var response = new
+        {
+            status = report.Status.ToString(),
+            timestamp = DateTime.UtcNow,
+            service = "E-Learning API",
+            checks = report.Entries.Select(entry => new
+            {
+                name = entry.Key,
+                status = entry.Value.Status.ToString(),
+                description = entry.Value.Description,
+                duration = entry.Value.Duration.TotalMilliseconds
+            })
+        };
+
+        await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(response));
+    }
+});
 
 app.Run();
