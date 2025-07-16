@@ -1,10 +1,18 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using ELearning.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+
+// Add Entity Framework
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -56,7 +64,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map health check endpoint
-// In your Program.cs or Startup.cs
 app.MapHealthChecks("/api/health", new HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>
