@@ -167,6 +167,27 @@ namespace ELearning.API.Controllers
         }
 
         /// <summary>
+        /// GET /api/courses/category - Get all category
+        /// </summary>
+        [HttpGet("categories")]
+        public async Task<ActionResult<List<Course>>> GetCategories()
+        {
+            try
+            {
+
+                var categories = await _courseRepository.GetCategoriesAsync();
+
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving categoreis");
+                return StatusCode(500, "An error occurred while retrieving courses");
+            }
+        }
+
+
+        /// <summary>
         /// GET /api/courses/category/{category} - Get courses by category
         /// </summary>
         [HttpGet("category/{category}")]

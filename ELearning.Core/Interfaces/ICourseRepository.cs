@@ -11,6 +11,8 @@ namespace ELearning.Core.Interfaces
         // Read operations - all return IEnumerable for maximum flexibility
         Task<IEnumerable<Course>> GetAllCoursesAsync();
         Task<Course?> GetCourseByIdAsync(int id);
+
+        Task<List<String>> GetCategoriesAsync();
         Task<IEnumerable<Course>> GetCoursesByCategoryAsync(string category);
         Task<IEnumerable<Course>> GetPublishedCoursesAsync();
 

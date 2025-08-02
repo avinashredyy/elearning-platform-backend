@@ -37,6 +37,15 @@ namespace ELearning.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<List<String>> GetCategoriesAsync()
+        {
+
+            return await _context.Courses
+                .OrderBy(c => c.Category)
+                .Select(c => c.Category)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Course>> GetCoursesByCategoryAsync(string category)
         {
             _logger.LogInformation("Retrieving courses for category: {Category}", category);
