@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
+using ELearning.Core.Interfaces;
 using ELearning.Infrastructure.Data;
+using ELearning.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Register the repository for dependency injection
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

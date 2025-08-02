@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ELearning.Core\ELearning.Core.csproj" />
+    <ProjectReference Include="..\ELearning.Shared\ELearning.Shared.csproj" />
   </ItemGroup>
 
 </Project>
